@@ -17,6 +17,7 @@ class ViewController: UIViewController {
     var isPressedOpration: Bool = false;
     @IBOutlet weak var result: UILabel!;
     
+    // Handles all clicking on the numbers.
     @IBAction func digits(_ sender: UIButton) {
         if isPressedOpration == true {
             result.text = String(sender.tag);
@@ -83,8 +84,8 @@ class ViewController: UIViewController {
     @IBAction func handleAC(_ sender: UIButton) {
         clean();
     }
-
     
+    // Processes common operations.
     func processOperation(operation: String, tag: Int){
         if !isPressedOpration && result.text!.last != "," {
             storedNumber = getCurrentValue();
@@ -97,10 +98,12 @@ class ViewController: UIViewController {
         }
     }
     
+    // Returns current number value from the screen.
     func getCurrentValue() -> Double {
         return Double(result.text!.replacingOccurrences(of: ",", with: "."))!;
     }
     
+    // Shows on the screen calculation result.
     func setResult(result: Double){
         if result.truncatingRemainder(dividingBy: 1.0) != 0 {
             self.result.text = String(format: "%.2f", result).replacingOccurrences(of: ".", with: ",");
@@ -109,6 +112,7 @@ class ViewController: UIViewController {
         }
     }
     
+    // Calculates all operations.
     func calculate(operation: Int){
         switch operation {
         case 11: // Division.
@@ -129,6 +133,7 @@ class ViewController: UIViewController {
         isPressedOpration = false;
     }
     
+    // Resets everything to initial state.
     func clean(){
         result.text = "0";
         storedNumber = 0;
@@ -138,6 +143,7 @@ class ViewController: UIViewController {
         isPressedOpration = false;
     }
     
+    // Determines whether state is ready to calculate.
     func isReadyToCalculate() -> Bool{
         return !isPressedOpration && !isAddedComa && result.text!.count > 0;
     }
