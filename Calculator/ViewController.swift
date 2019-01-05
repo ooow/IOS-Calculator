@@ -37,7 +37,7 @@ class ViewController: UIViewController {
     
     // Division.
     @IBAction func handleDivision(_ sender: UIButton) {
-        processOperation(operation: "/", tag: sender.tag);
+        processOperation(operation: "÷", tag: sender.tag);
     }
     
     // Multiplication.
@@ -55,9 +55,25 @@ class ViewController: UIViewController {
         processOperation(operation: "+", tag: sender.tag);
     }
     
+    // Sqr.
+    @IBAction func handleSqr(_ sender: UIButton) {
+        if isReadyToCalculate() {
+            storedNumber = getCurrentValue();
+            calculate(operation: sender.tag);
+        }
+    }
+    
+    // Sqrt.
+    @IBAction func handleSqrt(_ sender: UIButton) {
+        if isReadyToCalculate() {
+            storedNumber = getCurrentValue();
+            calculate(operation: sender.tag);
+        }
+    }
+    
     // Coma.
     @IBAction func handleComa(_ sender: UIButton){
-        if !isPressedOpration && !isAddedComa && result.text!.count > 0 {
+        if isReadyToCalculate() {
             result.text! += ",";
             isAddedComa = true;
         }
@@ -95,14 +111,18 @@ class ViewController: UIViewController {
     
     func calculate(operation: Int){
         switch operation {
-        case 11: // Division
+        case 11: // Division.
             setResult(result: storedNumber / actualNumber);
-        case 12: // Multiplication
+        case 12: // Multiplication.
             setResult(result: storedNumber * actualNumber);
-        case 13: // Subtraction
+        case 13: // Subtraction.
             setResult(result: storedNumber - actualNumber);
-        case 14: // Summation
+        case 14: // Summation.
             setResult(result: storedNumber + actualNumber);
+        case 17: // Sqr.
+            setResult(result: storedNumber * storedNumber);
+        case 18: // Sqrt.
+            setResult(result: storedNumber.squareRoot());
         default:
             break;
         }
@@ -116,6 +136,10 @@ class ViewController: UIViewController {
         operationType = 0;
         isAddedComa = false;
         isPressedOpration = false;
+    }
+    
+    func isReadyToCalculate() -> Bool{
+        return !isPressedOpration && !isAddedComa && result.text!.count > 0;
     }
     
     override func viewDidLoad() {
