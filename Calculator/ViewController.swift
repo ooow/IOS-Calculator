@@ -13,6 +13,7 @@ class ViewController: UIViewController {
     var actualNumber: Double = 0;
     var storedNumber: Double = 0;
     var operationType: Int = 0;
+    var isAddedComa: Bool = false;
     var isPressedOpration: Bool = false;
     @IBOutlet weak var result: UILabel!;
     
@@ -21,64 +22,104 @@ class ViewController: UIViewController {
             result.text = String(sender.tag);
             isPressedOpration = false;
         } else {
-            result.text = result.text! + String(sender.tag);
-        }
-        actualNumber = Double(result.text!)!;
-    }
-    
-    @IBAction func buttons(_ sender: UIButton) {
-        if result.text != "" {
-            switch sender.tag {
-            case 10: // Clean
-                clean();
-            case 11: // Division
-                pressOperation(operation: "/", tag: sender.tag);
-            case 12: // Multiplication
-                pressOperation(operation: "*", tag: sender.tag);
-            case 13: // Subtraction
-                pressOperation(operation: "-", tag: sender.tag);
-            case 14: // Summation
-                pressOperation(operation: "+", tag: sender.tag);
-            case 15: // Equal
-                calculate(operation: operationType);
-            default:
-                break;
+            if (result.text!.count == 1 && result.text!.last == "0"){
+                result.text = "";
             }
+            result.text! += String(sender.tag);
+        }
+        actualNumber = getCurrentValue();
+    }
+    
+    // Calculate.
+    @IBAction func handleEquals(_ sender: UIButton) {
+        calculate(operation: operationType);
+    }
+    
+    // Division.
+    @IBAction func handleDivision(_ sender: UIButton) {
+        processOperation(operation: "/", tag: sender.tag);
+    }
+    
+    // Multiplication.
+    @IBAction func handleMultiplication(_ sender: UIButton) {
+        processOperation(operation: "x", tag: sender.tag);
+    }
+    
+    // Subtraction.
+    @IBAction func handleSubtraction(_ sender: UIButton) {
+        processOperation(operation: "-", tag: sender.tag);
+    }
+    
+    // Summation.
+    @IBAction func handleSummation(_ sender: UIButton) {
+        processOperation(operation: "+", tag: sender.tag);
+    }
+    
+    // Coma.
+    @IBAction func handleComa(_ sender: UIButton){
+        if !isPressedOpration && !isAddedComa && result.text!.count > 0 {
+            result.text! += ",";
+            isAddedComa = true;
         }
     }
     
-    func pressOperation(operation: String, tag: Int){
-        storedNumber = Double(result.text!)!;
-        result.text = operation;
-        operationType = tag;
-        isPressedOpration = true;
+    // Clean.
+    @IBAction func handleAC(_ sender: UIButton) {
+        clean();
+    }
+
+    
+    func processOperation(operation: String, tag: Int){
+        if !isPressedOpration && result.text!.last != "," {
+            storedNumber = getCurrentValue();
+            result.text = operation;
+            operationType = tag;
+            isAddedComa = false;
+            isPressedOpration = true;
+        } else {
+            calculate(operation: tag);
+        }
+    }
+    
+    func getCurrentValue() -> Double {
+        return Double(result.text!.replacingOccurrences(of: ",", with: "."))!;
+    }
+    
+    func setResult(result: Double){
+        if result.truncatingRemainder(dividingBy: 1.0) != 0 {
+            self.result.text = String(format: "%.2f", result).replacingOccurrences(of: ".", with: ",");
+        } else {
+            self.result.text = String(Int(result));
+        }
     }
     
     func calculate(operation: Int){
         switch operation {
         case 11: // Division
-            result.text = String(storedNumber / actualNumber)
+            setResult(result: storedNumber / actualNumber);
         case 12: // Multiplication
-            result.text = String(storedNumber * actualNumber)
+            setResult(result: storedNumber * actualNumber);
         case 13: // Subtraction
-            result.text = String(storedNumber - actualNumber)
+            setResult(result: storedNumber - actualNumber);
         case 14: // Summation
-            result.text = String(storedNumber + actualNumber)
+            setResult(result: storedNumber + actualNumber);
         default:
             break;
         }
-        isPressedOpration = true;
+        isPressedOpration = false;
     }
     
     func clean(){
-        result.text = "";
+        result.text = "0";
         storedNumber = 0;
         actualNumber = 0;
         operationType = 0;
+        isAddedComa = false;
+        isPressedOpration = false;
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+        result.text = "0";
     }
 }
