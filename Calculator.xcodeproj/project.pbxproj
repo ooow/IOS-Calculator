@@ -32,15 +32,15 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		DF3389B721DED1FD00C80C0F /* Calculator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = Calculator.app; path = "/Users/goga/Projects/calc/Calculator/build/Debug-iphoneos/Calculator.app"; sourceTree = "<absolute>"; };
 		DF3389BA21DED1FD00C80C0F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DF3389BC21DED1FD00C80C0F /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		DF3389BF21DED1FD00C80C0F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		DF3389C121DED1FE00C80C0F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		DF3389C421DED1FE00C80C0F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		DF3389C621DED1FE00C80C0F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		DF3389CB21DED1FE00C80C0F /* CalculatorTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = CalculatorTests.xctest; path = "/Users/goga/Projects/calc/Calculator/build/Debug-iphoneos/CalculatorTests.xctest"; sourceTree = "<absolute>"; };
-		DF3389D621DED1FE00C80C0F /* CalculatorUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = CalculatorUITests.xctest; path = "/Users/goga/Projects/calc/Calculator/build/Debug-iphoneos/CalculatorUITests.xctest"; sourceTree = "<absolute>"; };
+		DF44D33E21E69EE4005EF092 /* Calculator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Calculator.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		DF44D33F21E69EE4005EF092 /* CalculatorTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CalculatorTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		DF44D34021E69EE4005EF092 /* CalculatorUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CalculatorUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -72,6 +72,9 @@
 			isa = PBXGroup;
 			children = (
 				DF3389B921DED1FD00C80C0F /* Calculator */,
+				DF44D33E21E69EE4005EF092 /* Calculator.app */,
+				DF44D33F21E69EE4005EF092 /* CalculatorTests.xctest */,
+				DF44D34021E69EE4005EF092 /* CalculatorUITests.xctest */,
 			);
 			sourceTree = "<group>";
 		};
@@ -105,7 +108,7 @@
 			);
 			name = Calculator;
 			productName = Calculator;
-			productReference = DF3389B721DED1FD00C80C0F /* Calculator.app */;
+			productReference = DF44D33E21E69EE4005EF092 /* Calculator.app */;
 			productType = "com.apple.product-type.application";
 		};
 		DF3389CA21DED1FE00C80C0F /* CalculatorTests */ = {
@@ -123,7 +126,7 @@
 			);
 			name = CalculatorTests;
 			productName = CalculatorTests;
-			productReference = DF3389CB21DED1FE00C80C0F /* CalculatorTests.xctest */;
+			productReference = DF44D33F21E69EE4005EF092 /* CalculatorTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 		DF3389D521DED1FE00C80C0F /* CalculatorUITests */ = {
@@ -141,7 +144,7 @@
 			);
 			name = CalculatorUITests;
 			productName = CalculatorUITests;
-			productReference = DF3389D621DED1FE00C80C0F /* CalculatorUITests.xctest */;
+			productReference = DF44D34021E69EE4005EF092 /* CalculatorUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 /* End PBXNativeTarget section */
@@ -394,6 +397,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = WD6CKT893L;
 				INFOPLIST_FILE = Calculator/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -411,6 +415,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = WD6CKT893L;
 				INFOPLIST_FILE = Calculator/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
