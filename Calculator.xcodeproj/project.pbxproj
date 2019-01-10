@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		307FC43D18697AB9AEAA0721 /* CalculatorEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 307FC88B46EE8004D627E9C7 /* CalculatorEngine.swift */; };
 		DF3389BB21DED1FD00C80C0F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF3389BA21DED1FD00C80C0F /* AppDelegate.swift */; };
 		DF3389BD21DED1FD00C80C0F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF3389BC21DED1FD00C80C0F /* ViewController.swift */; };
 		DF3389C021DED1FD00C80C0F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DF3389BE21DED1FD00C80C0F /* Main.storyboard */; };
@@ -32,6 +33,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		307FC88B46EE8004D627E9C7 /* CalculatorEngine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CalculatorEngine.swift; path = Assets.xcassets/CalculatorEngine.swift; sourceTree = "<group>"; };
 		DF3389BA21DED1FD00C80C0F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DF3389BC21DED1FD00C80C0F /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		DF3389BF21DED1FD00C80C0F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -87,6 +89,7 @@
 				DF3389C121DED1FE00C80C0F /* Assets.xcassets */,
 				DF3389C321DED1FE00C80C0F /* LaunchScreen.storyboard */,
 				DF3389C621DED1FE00C80C0F /* Info.plist */,
+				307FC88B46EE8004D627E9C7 /* CalculatorEngine.swift */,
 			);
 			path = Calculator;
 			sourceTree = "<group>";
@@ -224,6 +227,7 @@
 			files = (
 				DF3389BD21DED1FD00C80C0F /* ViewController.swift in Sources */,
 				DF3389BB21DED1FD00C80C0F /* AppDelegate.swift in Sources */,
+				307FC43D18697AB9AEAA0721 /* CalculatorEngine.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -15,11 +15,13 @@ class ViewController: UIViewController {
       btnSqrt, btnSubtraction, btnSummation: UIButton!
   var result: UILabel!
 
-  var actualNumber: Double = 0;
-  var storedNumber: Double = 0;
-  var operationType: String?;
-  var isAddedComa: Bool = false;
-  var isPressedOperation: Bool = false;
+  var actualNumber: Double = 0
+  var storedNumber: Double = 0
+  var operationType: String?
+  var isAddedComa: Bool = false
+  var isPressedOperation: Bool = false
+
+  let engine = CalculatorEngine()
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -40,12 +42,16 @@ class ViewController: UIViewController {
       }
       result.text! += sender.currentTitle!
     }
-    actualNumber = getCurrentValue()
+    actualNumber = engine.getValue(from: result)
   }
 
   // Calculate.
   @objc func handleEquals(_ sender: UIButton) {
-    calculate(operation: operationType!)
+    engine.calculate(operation: operationType!,
+                     first: storedNumber,
+                     second: actualNumber,
+                     label: result)
+    isPressedOperation = false
   }
 
   // Division.
@@ -70,23 +76,30 @@ class ViewController: UIViewController {
 
   // Sqr.
   @objc func handleSqr(_ sender: UIButton) {
-    if isReadyToCalculate() {
-      storedNumber = getCurrentValue()
-      calculate(operation: sender.currentTitle!)
+    if isReadyToCalculator() {
+      storedNumber = engine.getValue(from: result)
+      engine.calculate(operation: sender.currentTitle!,
+                       first: storedNumber,
+                       second: actualNumber,
+                       label: result)
     }
   }
 
   // Sqrt.
   @objc func handleSqrt(_ sender: UIButton) {
-    if isReadyToCalculate() {
-      storedNumber = getCurrentValue()
-      calculate(operation: sender.currentTitle!)
+    if isReadyToCalculator() {
+      storedNumber = engine.getValue(from: result)
+      engine.calculate(operation: sender.currentTitle!,
+                       first: storedNumber,
+                       second: actualNumber,
+                       label: result)
+      isPressedOperation = false
     }
   }
 
   // Coma.
   @objc func handleComa(_ sender: UIButton) {
-    if isReadyToCalculate() {
+    if isReadyToCalculator() {
       result.text! += ","
       isAddedComa = true
     }
@@ -100,49 +113,18 @@ class ViewController: UIViewController {
   // Processes common operations.
   func processOperation(operation: String) {
     if !isPressedOperation && result.text!.last != "," {
-      storedNumber = getCurrentValue()
+      storedNumber = engine.getValue(from: result)
       result.text = operation
       operationType = operation
       isAddedComa = false
       isPressedOperation = true
     } else {
-      calculate(operation: operationType!)
+      engine.calculate(operation: operationType!,
+                       first: storedNumber,
+                       second: actualNumber,
+                       label: result)
+      isPressedOperation = false
     }
-  }
-
-  // Returns current number value from the screen.
-  func getCurrentValue() -> Double {
-    return Double(result.text!.replacingOccurrences(of: ",", with: "."))!
-  }
-
-  // Shows on the screen calculation result.
-  func setResult(result: Double) {
-    if result.truncatingRemainder(dividingBy: 1.0) != 0 {
-      self.result.text = String(format: "%.2f", result).replacingOccurrences(of: ".", with: ",")
-    } else {
-      self.result.text = String(Int(result))
-    }
-  }
-
-  // Calculates all operations.
-  func calculate(operation: String) {
-    switch operation {
-    case "÷": // Division.
-      setResult(result: storedNumber / actualNumber)
-    case "x": // Multiplication.
-      setResult(result: storedNumber * actualNumber)
-    case "-": // Subtraction.
-      setResult(result: storedNumber - actualNumber)
-    case "+": // Summation.
-      setResult(result: storedNumber + actualNumber)
-    case "x²": // Sqr.
-      setResult(result: storedNumber * storedNumber)
-    case "√": // Sqrt.
-      setResult(result: storedNumber.squareRoot())
-    default:
-      break
-    }
-    isPressedOperation = false
   }
 
   // Resets everything to initial state.
@@ -156,11 +138,11 @@ class ViewController: UIViewController {
   }
 
   // Determines whether state is ready to calculate.
-  func isReadyToCalculate() -> Bool {
+  func isReadyToCalculator() -> Bool {
     return !isPressedOperation && !isAddedComa && result.text!.count > 0
   }
 
-  /* Section related to configuring the view. */
+  // MARK: Section related to configuring the view.
   private func initResultLabel() {
     result = UILabel()
     result.font = UIFont(name: "Apple SD Gothic Neo", size: 50.0)
@@ -172,8 +154,7 @@ class ViewController: UIViewController {
     result.translatesAutoresizingMaskIntoConstraints = false
     result.widthAnchor.constraint(equalToConstant: width - 20).isActive = true
     setPosition(element: result, position: .center, relatedTo: view)
-    setPosition(element: result, position: .top, relatedTo: btnClean,
-        constant: -100.0)
+    setPosition(element: result, position: .top, relatedTo: btnClean, constant: -100.0)
   }
 
   private func initButtons() {
@@ -195,8 +176,7 @@ class ViewController: UIViewController {
     btnSqrt = Button(title: "√", color: blue, titleColor: .white).get()
     btnSubtraction = Button(title: "-", color: blue, titleColor: .white).get()
     btnSummation = Button(title: "+", color: blue, titleColor: .white).get()
-    btnMultiplication = Button(title: "x", color: blue, titleColor: .white)
-        .get()
+    btnMultiplication = Button(title: "x", color: blue, titleColor: .white).get()
 
     btn0.addTarget(self, action: #selector(digits), for: .touchUpInside)
     btn1.addTarget(self, action: #selector(digits), for: .touchUpInside)
@@ -213,16 +193,11 @@ class ViewController: UIViewController {
     btnComa.addTarget(self, action: #selector(handleComa), for: .touchUpInside)
     btnSqr.addTarget(self, action: #selector(handleSqr), for: .touchUpInside)
     btnSqrt.addTarget(self, action: #selector(handleSqrt), for: .touchUpInside)
-    btnEqual.addTarget(self, action: #selector(handleEquals),
-        for: .touchUpInside)
-    btnDivision.addTarget(self, action: #selector(handleDivision),
-        for: .touchUpInside)
-    btnSummation.addTarget(self, action: #selector(handleSummation),
-        for: .touchUpInside)
-    btnSubtraction.addTarget(self, action: #selector(handleSubtraction),
-        for: .touchUpInside)
-    btnMultiplication.addTarget(self, action: #selector(handleMultiplication),
-        for: .touchUpInside)
+    btnEqual.addTarget(self, action: #selector(handleEquals), for: .touchUpInside)
+    btnDivision.addTarget(self, action: #selector(handleDivision), for: .touchUpInside)
+    btnSummation.addTarget(self, action: #selector(handleSummation), for: .touchUpInside)
+    btnSubtraction.addTarget(self, action: #selector(handleSubtraction), for: .touchUpInside)
+    btnMultiplication.addTarget(self, action: #selector(handleMultiplication), for: .touchUpInside)
 
     view.addSubview(btn0)
     view.addSubview(btn1)
@@ -250,62 +225,56 @@ class ViewController: UIViewController {
     setPosition(element: btn0, position: .bottom, relatedTo: view)
     setPosition(element: btnComa, position: .bottom, relatedTo: btn0)
     setPosition(element: btnComa, position: .left, relatedTo: btn0,
-        constant: btnWidth * 2 + btnMargin + 1)
+                constant: btnWidth * 2 + btnMargin + 1)
     setPosition(element: btnEqual, position: .bottom, relatedTo: btnComa)
     setPosition(element: btnEqual, position: .left, relatedTo: btnComa,
-        constant: btnWidth + btnMargin)
+                constant: btnWidth + btnMargin)
 
     /// 1 row.
     setPosition(element: btn1, position: .bottom, relatedTo: view,
-        constant: -(btnHeight + btnMargin))
+                constant: -(btnHeight + btnMargin))
     setPosition(element: btn2, position: .bottom, relatedTo: btn1)
-    setPosition(element: btn2, position: .left, relatedTo: btn1,
-        constant: btnWidth + btnMargin)
+    setPosition(element: btn2, position: .left, relatedTo: btn1, constant: btnWidth + btnMargin)
     setPosition(element: btn3, position: .bottom, relatedTo: btn2)
-    setPosition(element: btn3, position: .left, relatedTo: btn2,
-        constant: btnWidth + btnMargin)
+    setPosition(element: btn3, position: .left, relatedTo: btn2, constant: btnWidth + btnMargin)
     setPosition(element: btnSummation, position: .bottom, relatedTo: btn3)
     setPosition(element: btnSummation, position: .left, relatedTo: btn3,
-        constant: btnWidth + btnMargin)
+                constant: btnWidth + btnMargin)
 
     /// 2 row.
     setPosition(element: btn4, position: .bottom, relatedTo: view,
-        constant: -(btnHeight * 2 + btnMargin + 1))
+                constant: -(btnHeight * 2 + btnMargin + 1))
     setPosition(element: btn5, position: .bottom, relatedTo: btn4)
-    setPosition(element: btn5, position: .left, relatedTo: btn4,
-        constant: btnWidth + btnMargin)
+    setPosition(element: btn5, position: .left, relatedTo: btn4, constant: btnWidth + btnMargin)
     setPosition(element: btn6, position: .bottom, relatedTo: btn5)
-    setPosition(element: btn6, position: .left, relatedTo: btn5,
-        constant: btnWidth + btnMargin)
+    setPosition(element: btn6, position: .left, relatedTo: btn5, constant: btnWidth + btnMargin)
     setPosition(element: btnSubtraction, position: .bottom, relatedTo: btn6)
     setPosition(element: btnSubtraction, position: .left, relatedTo: btn6,
-        constant: btnWidth + btnMargin)
+                constant: btnWidth + btnMargin)
 
     /// 3 row.
     setPosition(element: btn7, position: .bottom, relatedTo: view,
-        constant: -(btnHeight * 3 + btnMargin + 2))
+                constant: -(btnHeight * 3 + btnMargin + 2))
     setPosition(element: btn8, position: .bottom, relatedTo: btn7)
-    setPosition(element: btn8, position: .left, relatedTo: btn7,
-        constant: btnWidth + btnMargin)
+    setPosition(element: btn8, position: .left, relatedTo: btn7, constant: btnWidth + btnMargin)
     setPosition(element: btn9, position: .bottom, relatedTo: btn8)
-    setPosition(element: btn9, position: .left, relatedTo: btn8,
-        constant: btnWidth + btnMargin)
+    setPosition(element: btn9, position: .left, relatedTo: btn8, constant: btnWidth + btnMargin)
     setPosition(element: btnMultiplication, position: .bottom, relatedTo: btn9)
     setPosition(element: btnMultiplication, position: .left, relatedTo: btn9,
-        constant: btnWidth + btnMargin)
+                constant: btnWidth + btnMargin)
 
     /// 4 row.
     setPosition(element: btnClean, position: .bottom, relatedTo: view,
-        constant: -(btnHeight * 4 + btnMargin + 3))
+                constant: -(btnHeight * 4 + btnMargin + 3))
     setPosition(element: btnSqrt, position: .bottom, relatedTo: btnClean)
     setPosition(element: btnSqrt, position: .left, relatedTo: btnClean,
-        constant: btnWidth + btnMargin)
+                constant: btnWidth + btnMargin)
     setPosition(element: btnSqr, position: .bottom, relatedTo: btnSqrt)
     setPosition(element: btnSqr, position: .left, relatedTo: btnSqrt,
-        constant: btnWidth + btnMargin)
+                constant: btnWidth + btnMargin)
     setPosition(element: btnDivision, position: .bottom, relatedTo: btnSqr)
     setPosition(element: btnDivision, position: .left, relatedTo: btnSqr,
-        constant: btnWidth + btnMargin)
+                constant: btnWidth + btnMargin)
   }
 
   class Button {
@@ -336,6 +305,7 @@ class ViewController: UIViewController {
       return btn
     }
   }
+
 }
 
 // Sets provided element to the position relative to another element.
@@ -343,25 +313,18 @@ func setPosition(element: UIView, position: Position, relatedTo: UIView,
                  constant: CGFloat = 0.0) {
   switch position {
   case .top:
-    element.topAnchor.constraint(equalTo: relatedTo.topAnchor,
-        constant: constant).isActive = true
-    break
+    element.topAnchor.constraint(equalTo: relatedTo.topAnchor, constant: constant).isActive = true
   case .right:
     element.rightAnchor.constraint(equalTo: relatedTo.rightAnchor,
-        constant: constant).isActive = true
-    break
+                                   constant: constant).isActive = true
   case .bottom:
     element.bottomAnchor.constraint(equalTo: relatedTo.bottomAnchor,
-        constant: constant).isActive = true
-    break
+                                    constant: constant).isActive = true
   case .left:
-    element.leftAnchor.constraint(equalTo: relatedTo.leftAnchor,
-        constant: constant).isActive = true
-    break
+    element.leftAnchor.constraint(equalTo: relatedTo.leftAnchor, constant: constant).isActive = true
   case .center:
     element.centerXAnchor.constraint(equalTo: relatedTo.centerXAnchor,
-        constant: constant).isActive = true
-    break
+                                     constant: constant).isActive = true
   }
 }
 
