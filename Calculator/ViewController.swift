@@ -10,25 +10,9 @@ import UIKit
 
 class ViewController: UIViewController {
 
-  var btn0: UIButton!
-  var btn1: UIButton!
-  var btn2: UIButton!
-  var btn3: UIButton!
-  var btn4: UIButton!
-  var btn5: UIButton!
-  var btn6: UIButton!
-  var btn7: UIButton!
-  var btn8: UIButton!
-  var btn9: UIButton!
-  var btnClean: UIButton!
-  var btnComa: UIButton!
-  var btnDivision: UIButton!
-  var btnEqual: UIButton!
-  var btnMultiplication: UIButton!
-  var btnSqr: UIButton!
-  var btnSqrt: UIButton!
-  var btnSubtraction: UIButton!
-  var btnSummation: UIButton!
+  var btn0, btn1, btn2, btn3, btn4, btn5, btn6, btn7, btn8, btn9: UIButton!
+  var btnClean, btnComa, btnDivision, btnEqual, btnMultiplication, btnSqr,
+      btnSqrt, btnSubtraction, btnSummation: UIButton!
   var result: UILabel!
 
   var actualNumber: Double = 0;
